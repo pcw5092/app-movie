@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="like">
+
+
+	<!--영화 좋아요 생성 -->
+	<insert id="movieLikeCreate" parameterType="hashmap">
+		INSERT INTO
+		LIKEMOVIES(MOVIE_ID, ID, POSTER_URL, MOVIE_NAME)
+		VALUES(#{movieId},
+		#{id}, #{posterURL}, #{movieName})
+	</insert>
+	<!-- 영화 좋아요 불러오기 -->
+	<select id="movieFindById" parameterType="string"
+		resultType="data.LikeMovie">
+		SELECT * FROM LIKEMOVIES WHERE ID = #{id}
+	</select>
+	<!-- 특정 영화 좋아요 삭제 -->
+	<delete id="movieLikeDelete" parameterType="hashmap">
+		DELETE FROM
+		LIKEMOVIES WHERE ID = #{id} AND MOVIE_ID = #{movieId}
+	</delete>
+
+
+	<!-- 배우 좋아요 생성 -->
+	<insert id="actorLikeCreate" parameterType="hashmap">
+		INSERT INTO
+		LIKEACTORS(ACTOR_ID, ID, POSTER_URL, ACTOR_NAME)
+		VALUES(#{actorId},
+		#{id}, #{posterURL}, #{actorName})
+	</insert>
+	<!-- 배우 좋아요 불러오기 -->
+	<select id="actorFindById" parameterType="string"
+		resultType="data.LikeActor">
+		SELECT * FROM LIKEACTORS WHERE ID = #{id}
+	</select>
+	<!-- 특정 배우 좋아요 삭제 -->
+	<delete id="actorLikeDelete" parameterType="hashmap">
+		DELETE FROM
+		LIKEACTORS WHERE ID = #{id} AND ACTOR_ID = #{actorId}
+	</delete>
+
+	<!--감독 좋아요 생성 -->
+	<insert id="directorLikeCreate" parameterType="hashmap">
+		INSERT INTO
+		LIKEDIRECTORS(DIRECTOR_ID, ID, POSTER_URL, DIRECTOR_NAME)
+		VALUES(#{directorId}, #{id}, #{posterURL}, #{directorName})
+	</insert>
+	<!-- 감독 좋아요 불러오기 -->
+	<select id="directorFindById" parameterType="string"
+		resultType="data.LikeDirector">
+		SELECT * FROM LIKEDIRECTORS WHERE ID = #{id}
+	</select>
+	<!-- 특정 감독 좋아요 삭제 -->
+	<delete id="directorLikeDelete" parameterType="hashmap">
+		DELETE FROM
+		LIKEDIRECTORS WHERE ID = #{id} AND DIRECTOR_ID = #{directorId}
+	</delete>
+
+
+	<!-- 유저의 좋아요 목록중 랜덤으로 하나 가져오기(영화) -->
+	<select id="movieFindRandom" resultType="data.LikeMovie"
+		parameterType="string">
+		SELECT * FROM LIKEMOVIES
+		WHERE ID = #{id}
+		ORDER BY RAND()
+		LIMIT 1
+	</select>
+
+	<!-- 유저의 좋아요 목록중 랜덤으로 하나 가져오기(감독) -->
+	<select id="directorFindRandom" resultType="data.LikeDirector"
+		parameterType="string">
+		SELECT * FROM LIKEDIRECTORS
+		WHERE ID = #{id}
+		ORDER BY RAND()
+		LIMIT 1
+	</select>
+
+	<!-- 유저의 좋아요 목록중 랜덤으로 하나 가져오기(배우) -->
+	<select id="actorFindRandom" resultType="data.LikeActor"
+		parameterType="string">
+		SELECT * FROM LIKEACTORS
+		WHERE ID = #{id}
+		ORDER BY RAND()
+		LIMIT 1
+	</select>
+
+
+</mapper>

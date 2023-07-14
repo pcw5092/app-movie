@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+
+	<!-- 게시글 등록 -->
+	<insert id="create" parameterType="hashmap">
+		INSERT INTO POSTS(POST_ID, ID, TITLE, CONTENTS, NAME)
+		VALUES (#{postId}, #{id}, #{title}, #{contents}, #{name})
+	</insert>
+
+	<!-- 게시글 N개 보기 게시글 목록 + 페이징 처리 -->
+	<select id="findByPostAtoB" resultType="data.Post"
+		parameterType="hashmap">
+		SELECT * FROM
+		(SELECT ROW_NUMBER() OVER (ORDER BY DATES
+		DESC) AS RN, t.* FROM
+		(SELECT * FROM POSTS) t
+		) AS temp WHERE RN BETWEEN #{a} AND #{b}
+	</select>
+
+	<!-- 게시글 디테일 보기 -->
+	<select id="findByPost" parameterType="String"
+		resultType="data.Post">
+		SELECT * FROM POSTS WHERE POST_ID=#{postId}
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="postUpdate" parameterType="hashmap">
+		UPDATE POSTS SET TITLE =
+		#{title}, CONTENTS = #{contents} WHERE POST_ID = #{postId}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="postDelecte" parameterType="String">
+		DELETE FROM POSTS WHERE
+		POST_ID = #{postId}
+	</delete>
+
+	<!-- 게시글 전체 갯수 가져오기 -->
+	<select id="countPost" resultType="int">
+		SELECT COUNT(*) FROM POSTS
+	</select>
+
+	<!-- 조회수 올리기 -->
+	<update id="updateViews" parameterType="String">
+		UPDATE POSTS SET VIEWS =
+		VIEWS + 1 WHERE POST_ID = #{postId}
+	</update>
+
+</mapper>

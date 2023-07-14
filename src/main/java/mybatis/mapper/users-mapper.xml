@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="users">
+
+	<!-- 회원가입 -->
+	<insert id="create" parameterType="hashmap">
+		INSERT INTO USERS(ID, PASS, NAME) 
+		VALUES(#{id}, #{pass}, #{name})
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="findById" resultType="data.User" parameterType="String">
+		SELECT *
+		FROM USERS WHERE ID = #{id} 
+	</select>
+	
+</mapper>
